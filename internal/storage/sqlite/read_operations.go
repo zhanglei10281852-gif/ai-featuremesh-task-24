@@ -123,9 +123,8 @@ func (q *queries) CountDataZoneInferenceRunsForBusinessDay(ctx context.Context, 
 func (q *queries) ListInferenceRuns(ctx context.Context, filter repository.InferenceRunFilter) (repository.InferenceRunPage, error) {
 	page := filter.Page.Normalize(200)
 	where, args := buildInferenceRunWhere(filter)
-	countWhere, countArgs := buildInferenceRunWhere(filter.CountFilter())
 	var total int
-	if err := q.q.QueryRowContext(ctx, `SELECT COUNT(*) FROM inference_runs`+countWhere, countArgs...).Scan(&total); err != nil {
+	if err := q.q.QueryRowContext(ctx, `SELECT COUNT(*) FROM inference_runs`+where, args...).Scan(&total); err != nil {
 		return repository.InferenceRunPage{}, translateError("count inference_runs", err)
 	}
 	sortColumn := runSortColumn(page.Sort)

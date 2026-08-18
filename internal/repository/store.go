@@ -98,16 +98,6 @@ type InferenceRunFilter struct {
 	To           *time.Time
 }
 
-func (f InferenceRunFilter) CountFilter() InferenceRunFilter {
-	copy := f
-	copy.Page = PageRequest{}
-	copy.State = ""
-	if copy.WorkspaceID == "" {
-		copy.SourceZoneID = f.SourceZoneID
-	}
-	return copy
-}
-
 type InferenceRunPage struct {
 	Items []domain.InferenceRun
 	Total int
